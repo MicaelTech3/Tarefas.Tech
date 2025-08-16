@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin • Tarefas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="admin/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="material-icons-outlined">dashboard_customize</span>
+      <h1>Admin</h1>
+      <span class="badge" id="total">0</span>
+    </div>
+    <div class="search">
+      <span class="material-icons-outlined">search</span>
+      <input id="q" placeholder="Procurar tarefa...">
+    </div>
+    <div class="actions">
+      <div class="filter">
+        <button class="icon-btn neutral" data-dept="ALL"><span class="material-icons-outlined">layers</span> Todos</button>
+        <button class="icon-btn" data-dept="TI"><span class="material-icons-outlined">memory</span> T.I</button>
+        <button class="icon-btn" data-dept="MANUT"><span class="material-icons-outlined">build</span> Manutenção</button>
+      </div>
+      <button id="add" class="btn"><span class="material-icons-outlined">add</span> Nova tarefa</button>
+      <a href="/user/index.html" target="_blank" class="icon-btn" title="Abrir portal do usuário">
+        <span class="material-icons-outlined">group</span>
+        Usuário
+      </a>
+    </div>
+  </header>
+
+  <main class="board">
+    <section class="column" data-status="todo">
+      <header><h2>Aguardando Início</h2><span class="pill" id="c-todo">0</span></header>
+      <div class="cards" id="col-todo"></div>
+    </section>
+    <section class="column" data-status="doing">
+      <header><h2>Em Execução</h2><span class="pill" id="c-doing">0</span></header>
+      <div class="cards" id="col-doing"></div>
+    </section>
+    <section class="column" data-status="done">
+      <header><h2>Concluído</h2><span class="pill" id="c-done">0</span></header>
+      <div class="cards" id="col-done"></div>
+    </section>
+  </main>
+
+  <dialog id="task-dlg">
+    <form id="task-form" method="dialog">
+      <h3>Criar/Editar Tarefa</h3>
+      <div class="grid">
+        <label>Título <input id="title" required maxlength="80"></label>
+        <label>Departamento
+          <select id="dept" required>
+            <option value="TI">T.I</option>
+            <option value="MANUT">Manutenção</option>
+          </select>
+        </label>
+        <label>Responsáveis (vírgula) <input id="assignees" placeholder="maria, joao"></label>
+        <label>Data <input type="date" id="dueDate"></label>
+        <label>Hora <input type="time" id="dueTime"></label>
+        <label>Status
+          <select id="status">
+            <option value="todo">Aguardando Início</option>
+            <option value="doing">Em Execução</option>
+            <option value="done">Concluído</option>
+          </select>
+        </label>
+        <label>Prioridade
+          <select id="priority" required>
+            <option value="low">Baixa</option>
+            <option value="medium" selected>Média</option>
+            <option value="high">Alta</option>
+            <option value="critical">Crítica</option>
+          </select>
+        </label>
+      </div>
+      <label>Descrição <textarea id="desc" rows="3"></textarea></label>
+      <menu class="dialog-actions">
+        <button value="cancel" class="icon-btn neutral">Cancelar</button>
+        <button id="save" value="default" class="btn">Salvar</button>
+      </menu>
+      <input type="hidden" id="taskId">
+    </form>
+  </dialog>
+
+  <dialog id="chat-dlg" class="chat-modal">
+    <form method="dialog">
+      <header class="chat-header">
+        <div class="avatar">U</div>
+        <div class="chat-title">
+          <strong id="chatTaskTitle">Chat da Tarefa</strong>
+          <small id="chatSub">conversa</small>
+        </div>
+        <button value="cancel" class="icon-btn neutral close-x" title="Fechar">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </header>
+
+      <div class="messages" id="msgs"></div>
+
+      <div class="footer chat-input">
+        <input id="msgText" placeholder="Mensagem">
+        <button id="sendMsg" class="btn"><span class="material-icons-outlined">send</span></button>
+      </div>
+
+      <input type="hidden" id="chatTaskId">
+    </form>
+  </dialog>
+
+  <template id="card-tpl">
+    <article class="card">
+      <div class="card-head">
+        <span class="chip" data-dept></span>
+        <h4 class="card-title"></h4>
+      </div>
+      <div class="meta-row">
+        <span class="meta due" data-due></span>
+        <button class="chat-btn" type="button" data-chat title="Abrir chat">
+          <span class="material-icons-outlined">chat</span>
+          <span class="badge unread" data-unread>0</span>
+        </button>
+      </div>
+      <div class="chips" data-assignees></div>
+      <div class="card-actions">
+        <div>
+          <button class="icon-btn" data-move="left" title="Mover para a coluna anterior"><span class="material-icons-outlined">chevron_left</span></button>
+          <button class="icon-btn" data-move="right" title="Mover para a próxima coluna"><span class="material-icons-outlined">chevron_right</span></button>
+        </div>
+        <div>
+          <button class="icon-btn" data-edit title="Editar"><span class="material-icons-outlined">edit</span></button>
+          <button class="icon-btn danger" data-del title="Excluir"><span class="material-icons-outlined">delete</span></button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script type="module" src="../firebase-config.js"></script>
+  <script type="module" src="admin/app.js"></script>
+</body>
+</html>

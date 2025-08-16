@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Usuário • Tarefas • T.I</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="user.css">
+</head>
+<body>
+  <header class="topbar user">
+    <div class="brand"><span class="material-icons-outlined">assignment</span><h1>Tarefas • T.I</h1></div>
+    <div class="actions">
+      <a class="icon-btn neutral back-btn" href="index.html">
+        <span class="material-icons-outlined">arrow_back</span> Departamentos
+      </a>
+    </div>
+  </header>
+
+  <main class="board">
+    <section class="column" data-status="todo">
+      <header><h2>Aguardando Início</h2><span class="pill" id="c-todo">0</span></header>
+      <div class="cards" id="col-todo"></div>
+    </section>
+    <section class="column" data-status="doing">
+      <header><h2>Em Execução</h2><span class="pill" id="c-doing">0</span></header>
+      <div class="cards" id="col-doing"></div>
+    </section>
+    <section class="column" data-status="done">
+      <header><h2>Concluído</h2><span class="pill" id="c-done">0</span></header>
+      <div class="cards" id="col-done"></div>
+    </section>
+  </main>
+
+  <dialog id="chat-dlg" class="chat-modal">
+    <form method="dialog">
+      <header class="chat-header">
+        <div class="avatar">A</div>
+        <div class="chat-title"><strong id="chatTaskTitle">Chat da Tarefa</strong><small id="chatSub">conversa</small></div>
+        <button value="cancel" class="icon-btn neutral close-x" title="Fechar"><span class="material-icons-outlined">close</span></button>
+      </header>
+
+      <div class="messages" id="msgs"></div>
+
+      <div class="footer chat-input">
+        <input id="msgText" placeholder="Mensagem">
+        <button id="sendMsg" class="btn"><span class="material-icons-outlined">send</span></button>
+      </div>
+
+      <input type="hidden" id="chatTaskId">
+    </form>
+  </dialog>
+
+  <template id="card-tpl">
+    <article class="card">
+      <div class="card-head"><span class="chip" data-dept></span><h4 class="card-title"></h4></div>
+      <div class="meta-row">
+        <span class="meta due" data-due></span>
+        <button class="chat-btn" type="button" data-chat title="Abrir chat">
+          <span class="material-icons-outlined">chat</span>
+          <span class="badge unread" data-unread>0</span>
+        </button>
+      </div>
+      <div class="chips" data-assignees></div>
+      <div class="card-actions">
+        <div>
+          <button class="icon-btn" data-move="left" title="Mover para a coluna anterior"><span class="material-icons-outlined">chevron_left</span></button>
+          <button class="icon-btn" data-move="right" title="Mover para a próxima coluna"><span class="material-icons-outlined">chevron_right</span></button>
+        </div>
+        <div class="hint">Sem acesso ao painel admin</div>
+      </div>
+    </article>
+  </template>
+
+  <script>window.FILTER_DEPT = "TI";</script>
+  <script type="module" src="../firebase-config.js"></script>
+  <script type="module" src="user.js"></script>
+</body>
+</html>
